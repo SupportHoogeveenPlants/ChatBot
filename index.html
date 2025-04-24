@@ -121,55 +121,74 @@
     <button id="send-btn">Verstuur</button>
   </div>
 
-  <script>
-    const webhookURL = "https://mikewebhook.app.n8n.cloud/webhook-test/cf924019-8a4c-4e04-a65a-fdeeb74a0afb";
-    const chatContainer = document.getElementById('chat-container');
-    const userInput = document.getElementById('user-input');
-    const sendBtn = document.getElementById('send-btn');
+<script>
+  const chatgeschiedenis = [];
 
-    function appendMessage(content, sender) {
-      const message = document.createElement('p');
-      message.textContent = content;
-      message.className = sender;
-      chatContainer.appendChild(message);
-      chatContainer.scrollTop = chatContainer.scrollHeight; // Scroll to bottom
+  async function verstuurVraag() {
+    const vraag = document.getElementById('vraag').value.trim();
+    if (!vraag) return;
+
+    voegBerichtToe(`👤 ${vraag}`);
+    document.getElementById('vraag').value = '';
+
+    // Laat weten dat we wachten
+    voegBerichtToe('🤖 Even geduld...');
+
+    try {
+      // We maken een fetch met een handmatige timeout van 8 seconden
+      const antwoord = await fetchMetTimeout(
+        'https://mikewebhook.app.n8n.cloud/webhook-test/cf924019-8a4c-4e04-a65a-fdeeb74a0afb',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ vraag: vraag })
+        },
+        8000 // 8 seconden
+      );
+
+      const data = await antwoord.json();
+      const reactie = data.antwoord || 'Er is geen antwoord ontvangen.';
+      vervangLaatsteBericht(`🤖 ${reactie}`);
+    } catch (error) {
+      vervangLaatsteBericht('🤖 Er is geen antwoord ontvangen (timeout of fout).');
     }
+  }
 
-    async function sendMessage() {
-      const question = userInput.value.trim();
-      if (!question) return;
+  // Timeout wrapper voor fetch
+  function fetchMetTimeout(resource, options = {}, timeout = 8000) {
+    return new Promise((resolve, reject) => {
+      const timer = setTimeout(() => {
+        reject(new Error('Timeout'));
+      }, timeout);
 
-      // Show user's question
-      appendMessage(`👤 ${question}`, 'user');
-      userInput.value = '';
-
-      // Show temporary bot message
-      const tempMessage = document.createElement('p');
-      tempMessage.textContent = "🤖 Even geduld...";
-      tempMessage.className = 'bot';
-      chatContainer.appendChild(tempMessage);
-
-      try {
-        const response = await Promise.race([
-          fetch(webhookURL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ vraag: question })
-          }).then(res => res.json()),
-          new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), 8000))
-        ]);
-
-        // Replace temporary message with bot's response
-        tempMessage.textContent = `🤖 ${response.antwoord}`;
-      } catch (error) {
-        tempMessage.textContent = "🤖 Er is geen antwoord ontvangen (timeout of fout).";
-      }
-    }
-
-    sendBtn.addEventListener('click', sendMessage);
-    userInput.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') sendMessage();
+      fetch(resource, options)
+        .then(response => {
+          clearTimeout(timer);
+          resolve(response);
+        })
+        .catch(err => {
+          clearTimeout(timer);
+          reject(err);
+        });
     });
-  </script>
+  }
+
+  function voegBerichtToe(tekst) {
+    chatgeschiedenis.unshift(tekst);
+    if (chatgeschiedenis.length > 10) chatgeschiedenis.pop();
+    toonBerichten();
+  }
+
+  function vervangLaatsteBericht(nieuweTekst) {
+    chatgeschiedenis[0] = nieuweTekst;
+    toonBerichten();
+  }
+
+  function toonBerichten() {
+    const container = document.getElementById('chatgeschiedenis');
+    container.innerHTML = chatgeschiedenis.map(b => `<div class="bericht">${b}</div>`).join('');
+  }
+</script>
+
 </body>
 </html>
