@@ -3,150 +3,173 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hoogeveen Chatbot</title>
+  <title>Hoogeveen Plants Chatbot</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      padding: 2em;
-      max-width: 600px;
-      margin: auto;
-      background-color: #f7f7f7;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
-    h1 {
-      text-align: center;
-      color: #2e7d32;
+    header {
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 10px;
-    }
-    .logo {
-      height: 40px;
-    }
-    .beschrijving {
-      background-color: #ffffff;
-      padding: 1em;
-      border-left: 5px solid #2e7d32;
-      margin-bottom: 1em;
-      line-height: 1.6;
-    }
-    input, button {
-      padding: 0.75em;
-      font-size: 1em;
-      width: 100%;
-      margin-top: 1em;
-      box-sizing: border-box;
-    }
-    button {
-      background-color: #2e7d32;
+      background-color: #4caf50;
       color: white;
+      padding: 10px 20px;
+      width: 100%;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+    header img {
+      height: 40px;
+      margin-right: 15px;
+    }
+    header h1 {
+      font-size: 1.5rem;
+      margin: 0;
+    }
+    .description {
+      background-color: white;
+      padding: 15px;
+      margin: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      width: 90%;
+      max-width: 600px;
+    }
+    .chat-container {
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      width: 90%;
+      max-width: 600px;
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 20px;
+      height: 400px;
+      overflow-y: auto;
+    }
+    .chat-container p {
+      margin: 5px 0;
+      padding: 10px;
+      border-radius: 8px;
+    }
+    .chat-container .user {
+      background-color: #d1e7dd;
+      align-self: flex-end;
+    }
+    .chat-container .bot {
+      background-color: #f8d7da;
+      align-self: flex-start;
+    }
+    .input-container {
+      display: flex;
+      width: 90%;
+      max-width: 600px;
+      margin-bottom: 20px;
+    }
+    .input-container input {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      margin-right: 10px;
+    }
+    .input-container button {
+      padding: 10px 20px;
       border: none;
+      background-color: #4caf50;
+      color: white;
+      border-radius: 8px;
       cursor: pointer;
     }
-    button:hover {
-      background-color: #27682c;
-    }
-    #chatgeschiedenis {
-      margin-top: 1.5em;
-      padding: 1em;
-      background-color: #e0f2f1;
-      border: 1px solid #b2dfdb;
-      border-radius: 5px;
-      min-height: 150px;
-      max-height: 300px;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column-reverse;
-    }
-    .bericht {
-      margin-bottom: 0.5em;
-      background-color: #ffffff;
-      padding: 0.5em;
-      border-radius: 5px;
+    .input-container button:hover {
+      background-color: #45a049;
     }
   </style>
 </head>
 <body>
-
-  <h1><img src="" alt="" class="logo"> Hoogeveen Chatbot</h1>
-
-  <div class="beschrijving">
-    <strong>Welkom bij de Hoogeveen Plants Chatbot! 🌿</strong><br><br>
-    Momenteel zijn we nog aan het testen, dus alle feedback is welkom.<br>
-    Stuur: <code>/help</code> om feedback te geven.<br><br>
-    Deze chatbot is bedoeld voor het beantwoorden van jouw interne vragen.<br>
-    Formuleer je vragen altijd zo duidelijk mogelijk voor het beste resultaat.<br><br>
-    Je kunt bijvoorbeeld vragen stellen over:<br>
-    - Wie moet wat bestellen, of waar je iets moet bestellen<br>
-    - Wat zijn de hekcodes van de tuinen<br>
-    - Op welke locatie staat welke plant<br>
-    - Welke klant is van welke verkoper<br>
-    - Voor welke klanten moeten we stickers plakken<br><br>
-    Laten we beginnen!
+  <header>
+    <img src="https://via.placeholder.com/40" alt="Hoogeveen Plants Logo">
+    <h1>Hoogeveen Plants Chatbot</h1>
+  </header>
+  <div class="description">
+    <p>Welkom bij de Hoogeveen Plants Chatbot! 🌿</p>
+    <p>Momenteel zijn we nog aan het testen, dus alle feedback is welkom.</p>
+    <p>Stuur: <code>/help</code> om feedback te geven</p>
+    <p>Deze chatbot is bedoeld voor het beantwoorden van jouw interne vragen.</p>
+    <p>Formuleer je vragen altijd zo duidelijk mogelijk voor het beste resultaat.</p>
+    <p>Je kunt bijvoorbeeld vragen stellen over:</p>
+    <ul>
+      <li>Wie moet wat bestellen, of waar je iets moet bestellen</li>
+      <li>Wat zijn de hekcodes van de tuinen</li>
+      <li>Op welke locatie staat welke plant</li>
+      <li>Welke klant is van welke verkoper</li>
+      <li>Voor welke klanten moeten we stickers plakken</li>
+    </ul>
+    <p>Laten we beginnen!</p>
+  </div>
+  <div class="chat-container" id="chat-container">
+    <!-- Chat messages will appear here -->
+  </div>
+  <div class="input-container">
+    <input type="text" id="user-input" placeholder="Typ je vraag hier...">
+    <button id="send-btn">Verstuur</button>
   </div>
 
-  <input id="vraag" placeholder="Typ hier je vraag..." />
-  <button onclick="verstuurVraag()">Verstuur</button>
+  <script>
+    const webhookURL = "https://mikewebhook.app.n8n.cloud/webhook-test/cf924019-8a4c-4e04-a65a-fdeeb74a0afb";
+    const chatContainer = document.getElementById('chat-container');
+    const userInput = document.getElementById('user-input');
+    const sendBtn = document.getElementById('send-btn');
 
-  <div id="chatgeschiedenis"></div>
-
-<script>
-  const chatgeschiedenis = [];
-
-  async function verstuurVraag() {
-    const vraag = document.getElementById('vraag').value.trim();
-    if (!vraag) return;
-
-    voegBerichtToe(`👤 ${vraag}`);
-    document.getElementById('vraag').value = '';
-
-    // Tijdelijk bericht laten zien
-    voegBerichtToe('🤖 Even geduld...');
-
-    try {
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 8000); // 8 seconden timeout
-
-      const response = await fetch(
-        'https://mikewebhook.app.n8n.cloud/webhook-test/cf924019-8a4c-4e04-a65a-fdeeb74a0afb',
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ vraag: vraag }),
-          signal: controller.signal
-        }
-      );
-
-      clearTimeout(timeout);
-
-      const data = await response.json();
-      const antwoord = data.antwoord || 'Er is geen antwoord ontvangen.';
-      vervangLaatsteBericht(`🤖 ${antwoord}`);
-    } catch (error) {
-      vervangLaatsteBericht('🤖 Er is geen antwoord ontvangen (timeout of fout).');
+    function appendMessage(content, sender) {
+      const message = document.createElement('p');
+      message.textContent = content;
+      message.className = sender;
+      chatContainer.appendChild(message);
+      chatContainer.scrollTop = chatContainer.scrollHeight; // Scroll to bottom
     }
-  }
 
-  function voegBerichtToe(tekst) {
-    chatgeschiedenis.unshift(tekst);
-    if (chatgeschiedenis.length > 10) chatgeschiedenis.pop();
-    toonBerichten();
-  }
+    async function sendMessage() {
+      const question = userInput.value.trim();
+      if (!question) return;
 
-  function vervangLaatsteBericht(nieuweTekst) {
-    chatgeschiedenis[0] = nieuweTekst;
-    toonBerichten();
-  }
+      // Show user's question
+      appendMessage(`👤 ${question}`, 'user');
+      userInput.value = '';
 
-  function toonBerichten() {
-    const container = document.getElementById('chatgeschiedenis');
-    container.innerHTML = chatgeschiedenis.map(b => `<div class="bericht">${b}</div>`).join('');
-  }
-</script>
+      // Show temporary bot message
+      const tempMessage = document.createElement('p');
+      tempMessage.textContent = "🤖 Even geduld...";
+      tempMessage.className = 'bot';
+      chatContainer.appendChild(tempMessage);
 
+      try {
+        const response = await Promise.race([
+          fetch(webhookURL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ vraag: question })
+          }).then(res => res.json()),
+          new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), 8000))
+        ]);
 
+        // Replace temporary message with bot's response
+        tempMessage.textContent = `🤖 ${response.antwoord}`;
+      } catch (error) {
+        tempMessage.textContent = "🤖 Er is geen antwoord ontvangen (timeout of fout).";
+      }
+    }
 
-
+    sendBtn.addEventListener('click', sendMessage);
+    userInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') sendMessage();
+    });
+  </script>
 </body>
 </html>
-
